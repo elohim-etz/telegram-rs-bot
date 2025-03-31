@@ -1,0 +1,22 @@
+[package]
+name = "telegram-bot-rs"
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Name <your.email@example.com>"]
+description = "A Telegram bot written in Rust"
+
+[dependencies]
+tokio = { version = "1.0", features = ["full"] }
+teloxide = { version = "0.12", features = ["macros", "auto-send"] }
+dotenv = "0.15"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+log = "0.4"
+pretty_env_logger = "0.4"
+thiserror = "1.0"
+anyhow = "1.0"
+rand = "0.8"
+reqwest = { version = "0.11", features = ["json"] }
+url = "2.0"
+lazy_static = "1.4"
+chrono = "0.4"
