@@ -4,7 +4,7 @@ use crate::bot::{
     commands::Command, 
     responses::*,
     quotes::get_random_quote,
-    waifu::get_waifu_image,
+    kawaii::get_kawaii_image,
     percent::get_daily_percentage,
     advice::get_daily_advice
 };
@@ -54,13 +54,13 @@ pub async fn handle_commands(
             }
         }
         Command::Kawaii(category) => {
-            match get_waifu_image(&category).await {
+            match get_kawaii_image(&category).await {
                 Ok(image_url) => {
                     bot.send_photo(msg.chat.id, teloxide::types::InputFile::url(image_url))
                         .await?;
                 }
                 Err(e) => {
-                    log::error!("Failed to fetch waifu image: {}", e);
+                    log::error!("Failed to fetch kawaii image: {}", e);
                     let help_text = "Usage: /kawaii <category>\n\nValid categories: waifu, neko, shinobu, megumin, bully, cuddle, cry, hug, awoo, kiss, lick, pat, smug, bonk, yeet, blush, smile, wave, highfive, handhold, nom, bite, glomp, slap, kill, kick, happy, wink, poke, dance, cringe";
                     bot.send_message(msg.chat.id, help_text).await?;
                 }

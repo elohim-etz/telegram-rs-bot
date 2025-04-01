@@ -4,7 +4,7 @@ pub mod handlers;
 pub mod models;
 pub mod responses;
 pub mod quotes;
-pub mod waifu; 
+pub mod kawaii; 
 pub mod percent; 
 pub mod advice; 
 

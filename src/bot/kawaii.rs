@@ -3,12 +3,12 @@ use thiserror::Error;
 use url::Url;
 
 #[derive(Debug, Deserialize)]
-pub struct WaifuResponse {
+pub struct KawaiiResponse {
     pub url: String,
 }
 
 #[derive(Error, Debug)]
-pub enum WaifuError {
+pub enum KawaiiError {
     #[error("Invalid category")]
     InvalidCategory,
     #[error("Request failed: {0}")]
@@ -19,7 +19,7 @@ pub enum WaifuError {
     UrlError(#[from] url::ParseError),
 }
 
-pub async fn get_waifu_image(category: &str) -> Result<Url, WaifuError> {
+pub async fn get_kawaii_image(category: &str) -> Result<Url, KawaiiError> {
     let valid_categories = [
         "waifu", "neko", "shinobu", "megumin", "bully", "cuddle", "cry", 
         "hug", "awoo", "kiss", "lick", "pat", "smug", "bonk", "yeet", 
@@ -28,10 +28,10 @@ pub async fn get_waifu_image(category: &str) -> Result<Url, WaifuError> {
     ];
     
     if !valid_categories.contains(&category) {
-        return Err(WaifuError::InvalidCategory);
+        return Err(KawaiiError::InvalidCategory);
     }
 
     let api_url = format!("https://api.waifu.pics/sfw/{}", category);
-    let response = reqwest::get(&api_url).await?.json::<WaifuResponse>().await?;
+    let response = reqwest::get(&api_url).await?.json::<KawaiiResponse>().await?;
     Ok(Url::parse(&response.url)?)
 }
