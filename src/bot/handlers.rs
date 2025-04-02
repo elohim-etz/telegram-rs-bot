@@ -6,8 +6,11 @@ use crate::bot::{
     quotes::get_random_quote,
     kawaii::get_kawaii_image,
     percent::get_daily_percentage,
-    advice::get_daily_advice
+    advice::get_daily_advice,
+    waifu::{get_waifu_image, WaifuError}
 };
+use teloxide::types::{InputFile};
+use url::Url;
 
 pub async fn handle_commands(
     bot: Bot,
@@ -121,6 +124,31 @@ pub async fn handle_commands(
                     bot.send_message(
                         msg.chat.id,
                         "Sorry, I couldn't get any advice right now 😢"
+                    ).await?;
+                }
+            }
+        },
+        Command::Waifu(tag) => {
+            match get_waifu_image(&tag).await {
+                Ok((image_url, caption, document_url)) => {
+                    // Send normal image with caption
+                    let image = InputFile::url(Url::parse(&image_url)?);
+                    bot.send_photo(msg.chat.id, image)
+                        .caption(caption)
+                        .await?;
+        
+                    // Send same image as document (lossless)
+                    let document = InputFile::url(Url::parse(&document_url)?);
+                    bot.send_document(msg.chat.id, document)
+                        .await?;
+                }
+                Err(e) => {
+                    bot.send_message(
+                        msg.chat.id,
+                        match e {
+                            WaifuError::NoImages => "No images found with that tag",
+                            _ => "Failed to fetch waifu image",
+                        }
                     ).await?;
                 }
             }

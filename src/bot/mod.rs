@@ -6,7 +6,8 @@ pub mod responses;
 pub mod quotes;
 pub mod kawaii; 
 pub mod percent; 
-pub mod advice; 
+pub mod advice;
+pub mod waifu;
 
 pub use commands::Command;
 pub use handlers::{handle_commands, handle_messages};

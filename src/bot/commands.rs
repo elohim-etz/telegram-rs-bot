@@ -24,6 +24,8 @@ pub enum Command {
     Gay,
     #[command(description = "get a random piece of advice")]
     Advice,
+    #[command(description = "get a waifu image (optional tag)")]
+    Waifu(String), 
 }
 
 impl Command {
