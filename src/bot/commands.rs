@@ -25,7 +25,9 @@ pub enum Command {
     #[command(description = "get a random piece of advice")]
     Advice,
     #[command(description = "get a waifu image (optional tag)")]
-    Waifu(String), 
+    Waifu(String),
+    #[command(description = "get weather for a location")]
+    Weather(String),
 }
 
 impl Command {

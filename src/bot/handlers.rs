@@ -7,7 +7,8 @@ use crate::bot::{
     kawaii::get_kawaii_image,
     percent::get_daily_percentage,
     advice::get_daily_advice,
-    waifu::{get_waifu_image, WaifuError}
+    waifu::{get_waifu_image, WaifuError},
+    weather::{get_weather, WeatherError}
 };
 use teloxide::types::{InputFile};
 use url::Url;
@@ -148,6 +149,40 @@ pub async fn handle_commands(
                         match e {
                             WaifuError::NoImages => "No images found with that tag",
                             _ => "Failed to fetch waifu image",
+                        }
+                    ).await?;
+                }
+            }
+        },
+        Command::Weather(location) => {
+            match get_weather(&location).await {
+                Ok(weather) => {
+                    let response = format!(
+                        "🌦 Weather in {}, {}, {}:\n\
+                        🕒 Local Time: {}\n\
+                        🌡 Temperature: {:.1}°C (Feels like {:.1}°C)\n\
+                        🌬 Wind: {:.1} km/h\n\
+                        💧 Humidity: {}%\n\
+                        ☁ Condition: {}",
+                        weather.location.name,
+                        weather.location.region,
+                        weather.location.country,
+                        weather.location.localtime,
+                        weather.current.temp_c,
+                        weather.current.feelslike_c,
+                        weather.current.wind_kph,
+                        weather.current.humidity,
+                        weather.current.condition.text
+                    );
+        
+                    bot.send_message(msg.chat.id, response).await?;
+                }
+                Err(e) => {
+                    bot.send_message(
+                        msg.chat.id,
+                        match e {
+                            WeatherError::LocationNotFound => "Location not found. Try another one.",
+                            _ => "Failed to fetch weather data.",
                         }
                     ).await?;
                 }

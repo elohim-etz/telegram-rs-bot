@@ -8,6 +8,7 @@ pub mod kawaii;
 pub mod percent; 
 pub mod advice;
 pub mod waifu;
+pub mod weather;
 
 pub use commands::Command;
 pub use handlers::{handle_commands, handle_messages};
